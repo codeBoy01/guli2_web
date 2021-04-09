@@ -41,11 +41,7 @@
         :row-style="{height:'100px'}"
         :cell-style="{padding:'0px'}"
         :row-class-name="tableRowClassName">
-        <el-table-column label="序号" width="70" align="center">
-            <template slot-scope="scope">
-              {{ (page - 1) * limit + scope.$index + 1 }}
-            </template>
-          </el-table-column>
+  
         <el-table-column
         fixed
         prop="meetingName"
