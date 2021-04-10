@@ -12,5 +12,23 @@ export default{
         //data:c表示把对象转换成json进行传递到接口里面
         data:meetingQuery
       })
-}
+},
+
+  //2.根据接受任务的学生编号来输出学生姓名
+  getMeetingReceList(users){
+    return request({
+      url:`/eduservice/bs-meeting/queryNamesByIds/`+users,
+      method:'get'
+    })
+
+  },
+  //3.完成会议
+  finishMeetingById(id){
+    return request({
+      url:`/eduservice/bs-meeting/finishMeeting/`+id,
+      method:'post'
+    })
+
+},
+
 }

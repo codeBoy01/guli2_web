@@ -45,41 +45,46 @@
         <el-table-column
         fixed
         prop="meetingName"
-        label="任务标题"
+        label="会议标题"
         width="150">
       </el-table-column>
         <el-table-column
           fixed
           prop="meetingContent"
-          label="任务内容"
+          label="会议内容"
           width="350">
         </el-table-column>
         <el-table-column
           prop="meetingLeaderName"
           label="发起人"
-          width="120">
+          width="60">
         </el-table-column>
         <el-table-column
-          prop="recename"
+          prop="meetingPersonName"
           label="接收人"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="taskProgress"
-          label="进展"
+          prop="meetingMinute"
+          label="会议时长（分钟）"
           width="160">
         </el-table-column>
         <el-table-column
-        prop="taskStatus"
-        label="任务状态"
+        prop="meetingPlace"
+        label="会议地点"
         width="160">
+      </el-table-column>
+        <el-table-column
+        prop="status"
+        label="会议状态"
+        width="100">
         <template slot-scope="scope">
-          {{ scope.row.taskStatus === true ? "已完成" : "进行中" }}
+          {{ scope.row.status === true ? "已完成" : "未完成" }}
         </template>
       </el-table-column>
         <el-table-column
-          prop="gmtCreate"
-          label="发布时间"
+          prop="meetingStartTime"
+          label="开始时间"
           width="200">
         </el-table-column>
         <el-table-column
@@ -95,7 +100,7 @@
             size="mini"
             @click="handleFinish(scope.row.id)">完成</el-button>
          
-            <router-link :to="'/task/edit/' + scope.row.id">
+            <router-link :to="'/meeting/edit/' + scope.row.id">
             <el-button
             type="primary"
             size="mini">编辑</el-button>
@@ -147,11 +152,13 @@
           created() {
               //页面渲染之前执行，一般调用methods中的方法
               this.getList();
+           
+              
       },
           methods: {
          //删除任务方法
       removeDataById(id) {
-        this.$confirm("此操作将永久删除该任务记录, 是否继续?", "提示", {
+        this.$confirm("此操作将永久删除该会议记录, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
@@ -171,18 +178,18 @@
       },
       //完成任务
       handleFinish(id){
-        this.$confirm("点击完成任务记录, 是否继续?", "提示", {
+        this.$confirm("点击完成会议, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
         }).then(() => {
           //调用删除方法
-          task.finishTaskById(id)
+          meeting.finishMeetingById(id)
           .then(response => {
             //删除成功
             this.$message({
               type: "success",
-              message: "成功完成任务!",
+              message: "会议完成!",
             });
             //回到列表页面
             this.getList()
@@ -200,6 +207,7 @@
               //请求成功
               //  console.log(response)
               this.list = response.data.rows;
+            
               this.total = response.data.total;
             
           })
@@ -209,7 +217,7 @@
           });
       },
      tableRowClassName({row, rowIndex}) {
-            if (row.taskStatus === true) {
+            if (row.status === true) {
                 return 'warning-row';
                 }         
            else {
