@@ -28,7 +28,37 @@ export default{
       url:`/eduservice/bs-meeting/finishMeeting/`+id,
       method:'post'
     })
-
 },
-
+  //4.根据会议id查询会议
+  getMeetingInfo(id){
+    return request({
+      url:`/eduservice/bs-meeting/getMeeting/`+id,
+      method:'get'
+    })
+  },
+  //5.更新会议
+    updateMeetingInfo(bsMeeting){
+      return request({
+          url:`/eduservice/bs-meeting/updateMeeting`,
+          method:'post',
+          data:bsMeeting
+      })
+  },
+    //6.添加会议
+    addMeeting(meeting){
+      return request({
+          url:`/eduservice/bs-meeting/addMeeting`,
+          method:'post',
+          data:meeting
+      })
+  },
+   //7.删除会议（通过id值）
+   deleteMeetingById(id){
+    return request({
+        // url: '/eduservice/teacher/pageTeacherCondition/'+current+'/'+limit,
+        url:`/eduservice/bs-meeting/deleteMeeting/`+id,
+        method: 'delete'
+        // params
+      })
+},
 }

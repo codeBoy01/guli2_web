@@ -164,7 +164,7 @@
           type: "warning",
         }).then(() => {
           //调用删除方法
-          task.deleteTaskById(id)
+          meeting.deleteMeetingById(id)
           .then(response => {
             //删除成功
             this.$message({

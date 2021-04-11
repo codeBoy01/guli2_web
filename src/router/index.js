@@ -94,6 +94,35 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/student',
+    component: Layout,
+    redirect: '/student/table',
+    name: '学生管理',
+    meta: { title: '学生管理', icon: 'example' },
+    children: [
+      {
+        path: 'table',
+        name: '学生列表',
+        component: () => import('@/views/edu/student/list'),
+        meta: { title: '学生列表', icon: 'table' }
+      },
+      {
+        path: 'add',
+        name: '添加学生',
+        component: () => import('@/views/edu/student/add'),
+        meta: { title: '添加学生', icon: 'form' }
+      }
+      ,
+      {
+        path:'edit/:id',
+        name:'修改学生信息',
+        component:() =>import('@/views/edu/student/add'),
+        meta:{title:'编辑学生信息',noCache:true},
+        hidden:true
+      }
+    ]
+  },
+  {
     path: '/meeting',
     component: Layout,
     redirect: '/meeting/table',

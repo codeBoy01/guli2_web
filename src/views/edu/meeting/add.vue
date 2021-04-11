@@ -71,6 +71,7 @@
   </template>
   <script>
   import taskApi from "@/api/bs/task";
+  import meetingApi from "@/api/bs/meeting";
   import ImageCropper from '@/components/ImageCropper';
   import PanThumb from '@/components/PanThumb';
   export default {
@@ -112,14 +113,21 @@
     methods: {
     // 获取下拉的值
     onSelectedDrug(e){
-      let obj = {};
-      obj = this.task_users.find((item)=>{//这里的userList就是上面遍历的数据源
-          return item.id === e;//筛选出匹配数据
+      let obj = [];
+      var str="";
+      for(var p=0;p<e.length;p++){
+      obj[p] = this.task_users.find((item)=>{//这里的userList就是上面遍历的数据源
+          return item.id === e[p];//筛选出匹配数据
       });
-      this.task.recename=obj.username;
+    }
+    str=obj[0].username;
+    for(var m=1;m<obj.length;m++){
+        str=str+","+obj[m].username;
+    }
+      this.meeting.meetingPersonName=str;
     },
       getUserList() {
-      taskApi.getUserList().then((response) => {
+     taskApi.getUserList().then((response) => {
         this.task_users = response.data.list;
       }).catch(err => {
         console.log(err);
@@ -136,32 +144,41 @@
           
         } //无id值，做添加操作
         else {
-          this.task = {};
-          this.task.sendid="0000000000";
-          this.task.sendname="wzz";
+          this.meeting = {};
+          this.meeting.meetingLeaderId="0000000000";
+          this.meeting.meetingLeaderName="wzz";
         }
       },
        //根据任务id查询的方法
     getInfo(id) {
-      taskApi.getTaskInfo(id).then((response) => {
-        this.task = response.data.bsTask;
+      meetingApi.getMeetingInfo(id).then((response) => {
+        this.meeting = response.data.bsMeeting;
+        let temp = response.data.bsMeeting.meetingPersonId.split(",");
+        this.meeting.meetingPersonId = temp;
+
       });
     },
       saveOrUpdate() {
         //判断是添加还是修改
         //根据teacher是否有id值
-        if (!this.task.id) {
+        if (!this.meeting.id) {
           //添加时无id值
-          this.saveTask();
+          this.saveMeeting();
         } else {
           //修改时有id值
-          this.updateTeacher();
+          this.updateMeeting();
         }
       },
       //修改任务的方法
-      updateTask() {
-        taskApi
-          .updateTeacherInfo(this.task)
+      updateMeeting() {
+        var str4=this.meeting.meetingPersonId[0];
+          for(var u=1;u<this.meeting.meetingPersonId.length;u++){
+              str4=str4+","+this.meeting.meetingPersonId[u];
+          }
+          this.meeting.meetingPersonId="";
+          this.meeting.meetingPersonId=str4;
+        meetingApi
+          .updateMeetingInfo(this.meeting)
           .then((response) => {
             //添加成功
             //提示信息
@@ -170,7 +187,7 @@
               message: "修改成功!",
             });
             //回到列表，路由跳转
-            this.$router.push({ path: "/teacher/table" });
+            this.$router.push({ path: "/meeting/table" });
           })
           .catch((response) => {
             this.$message({
@@ -180,9 +197,15 @@
           });
       },
       //添加任务的方法
-      saveTask() {
-        taskApi
-          .addTask(this.task)
+      saveMeeting() {
+          var str2=this.meeting.meetingPersonId[0];
+          for(var u=1;u<this.meeting.meetingPersonId.length;u++){
+              str2=str2+","+this.meeting.meetingPersonId[u];
+          }
+          this.meeting.meetingPersonId="";
+          this.meeting.meetingPersonId=str2;
+        meetingApi
+          .addMeeting(this.meeting)
           .then((response) => {
             //添加成功
             //提示信息
@@ -191,7 +214,7 @@
               message: "添加成功!",
             });
             //回到列表，路由跳转
-            this.$router.push({ path: "/task/table" });
+            this.$router.push({ path: "/meeting/table" });
           })
           .catch((response) => {
             console.log(response)

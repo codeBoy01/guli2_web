@@ -92,7 +92,7 @@
     // 获取下拉的值
     onSelectedDrug(e){
       let obj = {};
-      obj = this.task_users.find((item)=>{//这里的userList就是上面遍历的数据源
+      obj = this.task_users.find((item)=>{
           return item.id === e;//筛选出匹配数据
       });
       this.task.recename=obj.username;
