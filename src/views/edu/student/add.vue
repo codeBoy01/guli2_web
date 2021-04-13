@@ -5,7 +5,7 @@
           <el-tag type="info">excel模版说明</el-tag>
           <el-tag>
             <i class="el-icon-download"/>
-            <a :href="'/static/01.xlsx'">点击下载模版</a>
+            <a :href="'/static/学生表格样例.xlsx'">点击下载模版</a>
           </el-tag>
         </el-form-item>
         <el-form-item label="选择Excel">
@@ -16,7 +16,7 @@
             :on-error="fileUploadError"
             :disabled="importBtnDisabled"
             :limit="1"
-            :action="BASE_API+'/eduservice/subject/addSubject'"
+            :action="BASE_API+'/eduservice/bs-user/addStudent'"
             name="file"
             accept="application/vnd.ms-excel">
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -62,11 +62,10 @@
             this.loading = false
             this.$message({
                 type:'success',
-                message:'添加课程分类成功'
+                message:'添加学生成功'
             }) 
-            //跳转到课程分类列表
             //路由跳转
-            this.$router.push({path:'/subject/list'})  
+            this.$router.push({path:'/student/table'})  
         },
         //上传失败
         fileUploadError(){
@@ -74,7 +73,7 @@
             this.loading = false
             this.$message({
                 type:'error',
-                message:'添加课程分类失败'
+                message:'添加学生失败'
             })   
   
         }
