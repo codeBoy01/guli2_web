@@ -61,6 +61,13 @@ export default{
           method:'get'
       })
   },
+  //8.获取任务进展
+  getProgress(id){
+    return request({
+      url:`/eduservice/bs-task-progress/getTaskProgressById/`+id,
+      method:'get'
+    })
+  },
     getAllTask(){
         return request({
           // url: '/eduservice/teacher/pageTeacherCondition/'+current+'/'+limit,

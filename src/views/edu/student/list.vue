@@ -124,25 +124,22 @@
               limit: 10, //每页记录数
               total: 0, //总记录数
               studentQuery:{}//封装的查询对象
-  
           };
        },
           created() {
               //页面渲染之前执行，一般调用methods中的方法
-              this.getList();
-           
-              
+              this.getList();     
       },
           methods: {
          //删除任务方法
       removeDataById(id) {
-        this.$confirm("此操作将永久删除该会议记录, 是否继续?", "提示", {
+        this.$confirm("此操作将永久删除该学生记录, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
         }).then(() => {
           //调用删除方法
-          meeting.deleteMeetingById(id)
+          student.deleteStudentById(id)
           .then(response => {
             //删除成功
             this.$message({
@@ -154,28 +151,6 @@
           })
         })
       },
-      //完成任务
-      handleFinish(id){
-        this.$confirm("点击完成会议, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }).then(() => {
-          //调用删除方法
-          meeting.finishMeetingById(id)
-          .then(response => {
-            //删除成功
-            this.$message({
-              type: "success",
-              message: "会议完成!",
-            });
-            //回到列表页面
-            this.getList()
-          })
-        })
-  
-      },
-  
           //根据查询对象得到数据
           getList(page = 1) {
               this.page = page;

@@ -90,6 +90,13 @@ export const constantRouterMap = [
         component:() =>import('@/views/edu/task/add'),
         meta:{title:'编辑任务',noCache:true},
         hidden:true
+      },
+      {
+        path:'progress/:id',
+        name:'任务进展',
+        component:() =>import('@/views/edu/task/progress'),
+        meta:{title:'任务任务',noCache:true},
+        hidden:true
       }
     ]
   },

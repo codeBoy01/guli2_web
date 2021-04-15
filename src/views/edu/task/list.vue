@@ -64,11 +64,6 @@
         width="120">
       </el-table-column>
       <el-table-column
-        prop="taskProgress"
-        label="进展"
-        width="160">
-      </el-table-column>
-      <el-table-column
       prop="taskStatus"
       label="任务状态"
       width="160">
@@ -104,6 +99,13 @@
             size="mini"
             type="danger"
             @click="removeDataById(scope.row.id)">删除</el-button>
+
+            <router-link :to="'/task/progress/' + scope.row.id">
+            <el-button
+            size="mini"
+            type="warning"
+            >查看任务进展</el-button>
+            </router-link>
         </template>
       </el-table-column>
     </el-table>
