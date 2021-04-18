@@ -52,6 +52,7 @@
   </template>
   <script>
   import taskApi from "@/api/bs/task";
+  import userApi from "@/api/bs/user";
   import ImageCropper from '@/components/ImageCropper';
   import PanThumb from '@/components/PanThumb';
   export default {
@@ -63,13 +64,14 @@
         task: {
           taskName: "",
           content:"",
-          sendid:"0000000000",
-          sendname:"wzz",
+          sendid:"",
+          sendname:"",
           reid:"",
           recename:"",
           gmtCreate:"",
           sort: 0,
         },
+        token:"",
         task_users:[],
         //获取dev.env.js端口号
         BASE_API:process.env.BASE_API,
@@ -80,6 +82,9 @@
       //页面渲染之前执行
       this.getUserList();
       this.init();
+      this.token = getToken();
+      this.task.sendname=this.token;
+      this.getUserId(this.token);
     },
     watch: {
       //监听
@@ -103,6 +108,14 @@
       }).catch(err => {
         console.log(err);
       });
+    },
+    getUserId(username){
+      userApi.getUserId(username).then((response)=>{
+        this.task.sendid = response.data.userId;
+      }).catch(err=>{
+        console.log(err);
+      })
+
     },
       init() {
         //判断路径中是否有id值

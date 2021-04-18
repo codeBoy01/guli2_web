@@ -70,7 +70,9 @@
     </div>
   </template>
   <script>
+    import { getToken, setToken, removeToken } from '@/utils/auth'
   import taskApi from "@/api/bs/task";
+  import userApi from "@/api/bs/user";
   import meetingApi from "@/api/bs/meeting";
   import ImageCropper from '@/components/ImageCropper';
   import PanThumb from '@/components/PanThumb';
@@ -83,8 +85,8 @@
         meeting: {
           meetingName: "",
           meetingContent:"",
-          meetingLeaderId:"0000000000",
-          meetingLeaderName:"wzz",
+          meetingLeaderId:"",
+          meetingLeaderName:"",
           meetingPersonId:"",
           meetingPersonName:"",
           meetingStartTime:"",
@@ -92,6 +94,7 @@
           meetingPlace:"",
           sort: 0,
         },
+        token:"",
         task_users:[],
         //获取dev.env.js端口号
         BASE_API:process.env.BASE_API,
@@ -102,6 +105,9 @@
       //页面渲染之前执行
       this.getUserList();
       this.init();
+      this.token = getToken();
+      this.meeting.meetingLeaderName=this.token;
+      this.getUserId(this.token);
     },
     watch: {
       //监听
@@ -132,6 +138,14 @@
       }).catch(err => {
         console.log(err);
       });
+    },
+    getUserId(username){
+      userApi.getUserId(username).then((response)=>{
+        this.meeting.meetingLeaderId = response.data.userId;
+      }).catch(err=>{
+        console.log(err);
+      })
+
     },
       init() {
         //判断路径中是否有id值

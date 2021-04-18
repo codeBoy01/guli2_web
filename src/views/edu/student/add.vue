@@ -32,6 +32,8 @@
     </div>
   </template>
   <script>
+import { getToken, setToken, removeToken } from '@/utils/auth'
+
   export default {
       data(){
           return{
@@ -39,12 +41,15 @@
               // OSS_PATH:process.env.OSS_PATH,//阿里云oss地址
               fileUploadBtnText:'上传到服务器',//按钮文字
               importBtnDisabled:false,//按钮是否禁用
-              loading:false
+              loading:false,
+              token:null,
   
           }
       },
       created(){
-  
+        this.token = getToken();
+        console.log(this.token)
+    
       },
       methods:{
           //点击按钮上传文件到接口里面
@@ -77,7 +82,7 @@
             })   
   
         }
-  
+
   
       }
   }

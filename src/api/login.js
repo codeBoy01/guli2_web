@@ -2,12 +2,8 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: '/eduservice/user/login',
+    url: '/eduservice/user/login/'+username+'/'+password,
     method: 'post',
-    data: {
-      username,
-      password
-    }
   })
 }
 
@@ -21,7 +17,7 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/user/logout',
+    url: '/eduservice/user/logout',
     method: 'post'
   })
 }
