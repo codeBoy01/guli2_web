@@ -6,5 +6,13 @@ getUserId(username){
       url:`/eduservice/bs-user/getId/`+username,
       method:'get'
   })
+},
+getManagerById(ids){
+  return request({
+    url:`/eduservice/bs-user/getManager/`+ids,
+    method:'get'
+})
+
 }
+
 }

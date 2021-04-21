@@ -51,6 +51,7 @@
     </div>
   </template>
   <script>
+      import { getToken, setToken, removeToken } from '@/utils/auth'
   import taskApi from "@/api/bs/task";
   import userApi from "@/api/bs/user";
   import ImageCropper from '@/components/ImageCropper';

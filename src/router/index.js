@@ -37,6 +37,39 @@ export const constantRouterMap = [
     }]
   },
   {
+    path: '/daily',
+    component: Layout,
+    redirect: '/daily/table',
+    name: '日常管理',
+    meta: { title: '日常管理', icon: 'example' },
+    children: [
+      {
+        path: 'message',
+        name: '消息列表',
+        component: () => import('@/views/edu/daily/message'),
+        meta: { title: '消息列表', icon: 'table' }
+      },
+      {
+        path: 'announcement',
+        name: '公告列表',
+        component: () => import('@/views/edu/daily/announcement'),
+        meta: { title: '公告列表', icon: 'tree' }
+      },
+      {
+        path: 'sign',
+        name: '日常签到管理',
+        component: () => import('@/views/edu/daily/announcement'),
+        meta: { title: '日常签到管理', icon: 'example' }
+      },
+      {
+        path:'personal',
+        name:'个人信息修改',
+        component:() =>import('@/views/edu/daily/personal'),
+        meta:{title:'个人信息修改', icon: 'form'},
+      }
+    ]
+  },
+  {
     path: '/teacher',
     component: Layout,
     redirect: '/teacher/table',
