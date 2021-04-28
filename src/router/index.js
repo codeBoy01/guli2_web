@@ -58,7 +58,7 @@ export const constantRouterMap = [
       {
         path: 'sign',
         name: '日常签到管理',
-        component: () => import('@/views/edu/daily/announcement'),
+        component: () => import('@/views/edu/daily/sign'),
         meta: { title: '日常签到管理', icon: 'example' }
       },
       {
@@ -180,15 +180,21 @@ export const constantRouterMap = [
         name: '发起会议',
         component: () => import('@/views/edu/meeting/add'),
         meta: { title: '发起会议', icon: 'form' }
-      }
-      ,
+      },
       {
         path:'edit/:id',
         name:'修改会议',
         component:() =>import('@/views/edu/meeting/add'),
         meta:{title:'编辑会议',noCache:true},
         hidden:true
+      },
+      {
+        path:'sign',
+        name:'会议签到管理',
+        component: () => import('@/views/edu/meeting/sign'),
+        meta: { title: '会议签到管理', icon: 'form' }
       }
+
     ]
   },
   {

@@ -15,7 +15,7 @@
 
         <el-form-item label="更改班级">
           <el-col :span="5">
-          <el-input  v-model="manager.userclasss" maxlength="30"/>
+          <el-input  v-model="manager.userclass" maxlength="30"/>
           </el-col>
         </el-form-item>
 
@@ -27,7 +27,7 @@
 
     
     
-  <el-form-item label="讲师头像">
+  <el-form-item label="头像">
       <!-- 头衔缩略图 -->
       <pan-thumb :image="manager.avatar"/>
       <!-- 文件上传按钮 -->
@@ -78,7 +78,6 @@ import PanThumb from '@/components/PanThumb';
             labName:"",
             avatar:""
           }, 
-          id:"",
           token:"",
         //上传弹框组件是否显示
         imagecropperShow:false,
@@ -92,11 +91,7 @@ import PanThumb from '@/components/PanThumb';
     created() {
       //页面渲染之前执行
       this.token = getToken();
-      console.log(this.token);
-      this.getUserId(this.token);
       this.init();
-      
-    
     },
     methods: {
       //关闭上传弹框的方法
@@ -114,28 +109,18 @@ import PanThumb from '@/components/PanThumb';
         //上传之后接口返回图片地址
        this.manager.avatar = data.url
       },
-      getUserId(username){
-      userApi.getUserId(username).then((response)=>{
-        this.id = response.data.userId;
-        
-      }).catch(err=>{
-        console.log(err);
-      })
-
-    },
     init() {
-        userApi.getManagerById(this.id)
+        userApi.getManagerInfo(this.token)
         .then((response)=>{
           this.manager = response.data.manager
         }).catch(err=>{
         console.log(err);
-      });
-        console.log(this.manager)
-     
-      },
-      update() {
+      });     
+      }
+      ,
+      Update() {
         userApi
-          .updateUserInfo(this.manager)
+          .updateManagerInfo(this.manager)
           .then((response) => {
             //添加成功
             //提示信息
@@ -144,7 +129,7 @@ import PanThumb from '@/components/PanThumb';
               message: "修改成功!",
             });
             //回到列表，路由跳转
-            this.$router.push({ path: "" });
+            this.$router.push({ path: "daily/personal" });
           })
           .catch((response) => {
             this.$message({

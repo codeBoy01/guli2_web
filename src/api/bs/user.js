@@ -7,12 +7,20 @@ getUserId(username){
       method:'get'
   })
 },
-getManagerById(ids){
+//2.通过id来获取管理员信息
+getManagerInfo(username){
+    return request({
+      url:`/eduservice/bs-user/getInfo/`+username,
+      method:'get'
+  })
+},
+//3，修改管理员信息
+updateManagerInfo(bsUser){
   return request({
-    url:`/eduservice/bs-user/getManager/`+ids,
-    method:'get'
-})
+    url:`/eduservice/bs-user/updateManagerInfo`,
+    method:'post',
+    data:bsUser
+  })
 
 }
-
 }
