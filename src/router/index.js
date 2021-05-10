@@ -66,6 +66,13 @@ export const constantRouterMap = [
         name:'个人信息修改',
         component:() =>import('@/views/edu/daily/personal'),
         meta:{title:'个人信息修改', icon: 'form'},
+      },
+      {
+        path:'addAnnounce',
+        name:'发布公告',
+        component:() =>import('@/views/edu/daily/addAnnounce'),
+        meta:{title:'发布公告',noCache:true},
+        hidden:true
       }
     ]
   },

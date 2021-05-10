@@ -4,10 +4,11 @@
   <!--查询表单-->
   <el-form :inline="true" class="demo-form-inline">
     <el-form-item>
-      <el-input v-model=" taskQuery.taskName" placeholder="任务标题" />
+      <el-input type="hidden" v-model=" taskQuery.sendid"/>
     </el-form-item>
+
     <el-form-item>
-      <el-input v-model=" taskQuery.sendName" placeholder="发布人" />
+      <el-input v-model=" taskQuery.taskName" placeholder="任务标题" />
     </el-form-item>
     <el-form-item label="添加时间">
       <el-date-picker
@@ -93,14 +94,14 @@
           <el-button
           type="primary"
           size="mini">编辑</el-button>
-          </router-link>
-        
+         
+        </router-link>
           <el-button
             size="mini"
             type="danger"
             @click="removeDataById(scope.row.id)">删除</el-button>
 
-            <router-link :to="'/task/progress/' + scope.row.id">
+          <router-link :to="'/task/progress/' + scope.row.id">
             <el-button
             size="mini"
             type="warning"
@@ -132,7 +133,10 @@
   
   </style>
   <script>
+import message from "@/api/bs/message";
 import task from "@/api/bs/task";
+import userApi from "@/api/bs/user";
+import { getToken, setToken, removeToken } from '@/utils/auth'
     export default {
         data() {
             //定义变量和初始值
@@ -141,15 +145,21 @@ import task from "@/api/bs/task";
             page: 1, //当前页
             limit: 10, //每页记录数
             total: 0, //总记录数
-            taskQuery:{}//封装的查询对象
-
+            taskQuery:{
+            },//封装的查询对象
+            token:"",
+            sendname:"",
+            message:{},
+            bsTask:{}
         };
      },
-        created() {
+   created() {
             //页面渲染之前执行，一般调用methods中的方法
-            this.getList();
+       
+       this.getList();
+           
     },
-        methods: {
+     methods: {
        //删除任务方法
     removeDataById(id) {
       this.$confirm("此操作将永久删除该任务记录, 是否继续?", "提示", {
@@ -157,8 +167,19 @@ import task from "@/api/bs/task";
         cancelButtonText: "取消",
         type: "warning",
       }).then(() => {
-        //调用删除方法
-        task.deleteTaskById(id)
+        task.getTaskInfo(id)
+          .then((response)=>{
+            console.log(response);
+            this.bsTask = response.data.bsTask;
+            this.message.title = "任务取消";
+            this.message.content = this.bsTask.sendname+"发布"+"内容为"+this.bsTask.content+"的任务已被删除";
+            this.message.userid = this.bsTask.reid;
+            console.log(this.message);
+            message.addMessage(this.message);
+        
+          }) .then(()=>{
+                //调用删除方法
+          task.deleteTaskById(id)
         .then(response => {
           //删除成功
           this.$message({
@@ -166,8 +187,12 @@ import task from "@/api/bs/task";
             message: "删除成功!",
           });
           //回到列表页面
-          this.getList()
+          this.getList();
+        
         })
+
+          })
+    
       })
     },
     //完成任务
@@ -177,10 +202,8 @@ import task from "@/api/bs/task";
         cancelButtonText: "取消",
         type: "warning",
       }).then(() => {
-        //调用删除方法
         task.finishTaskById(id)
         .then(response => {
-          //删除成功
           this.$message({
             type: "success",
             message: "成功完成任务!",
@@ -195,19 +218,25 @@ import task from "@/api/bs/task";
         //根据查询对象得到数据
         getList(page = 1) {
             this.page = page;
-             task
-            .getTaskListPage(this.page, this.limit, this.taskQuery)
-            .then((response) => {
-            //请求成功
-            //  console.log(response)
-            this.list = response.data.rows;
-            this.total = response.data.total;
+            this.token = getToken();
+            userApi.getUserId(this.token).then((response)=>{
+            this.$set(this.taskQuery,'sendid',response.data.userId)
+            task.getTaskListPage(this.page, this.limit, this.taskQuery)
+              .then((response) => {
+              //请求成功
+              //  console.log(response)
+              this.list = response.data.rows;
+              this.total = response.data.total;
+          })
+          .catch((error) => {
+            //请求失败
+            console.log(error);
+          });
+
+      }).catch(err=>{
+        console.log(err);
+      })
           
-        })
-        .catch((error) => {
-          //请求失败
-          console.log(error);
-        });
     },
    tableRowClassName({row, rowIndex}) {
           if (row.taskStatus === true) {
@@ -217,7 +246,12 @@ import task from "@/api/bs/task";
                 return 'success-row';
               }
                return '';
-          }
+          },
+
+
+
+
+  
 
           
     }
